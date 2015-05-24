@@ -29,5 +29,21 @@ if (isset($_REQUEST['method'])) {
 	';
 }
 ?>
+<h4>Useful tools: </h4>
+<strong> To set up git on local machine</strong> - https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps
+<br />
+<strong> Committing to git from server this is what worked for me in the terminal or git bash</strong>
+<p>
+To create a remote to github.com try:
+<br />
+ git remote add origin https://put your username here@github.com/put your git username here/the name of your repository here
+</p>
+<p>
+To change remote just do:
+<br />
+ git remote set-url origin https://put your username here@github.com/put your git username here/the name of your repository here
+<br />
+useful link http://stackoverflow.com/questions/7129232/problem-in-pushing-to-github
+</p>
 </body>
 </html>
