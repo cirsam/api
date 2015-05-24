@@ -11,11 +11,10 @@ Class Controller implements iMethods
 		//echo "this is the constructor";
 	}
 	
-	
 	public function getMethod($parms) 
 	{
 		if (isset($parms['id'])) {
-			print "get data for this id ".$parms['id'];
+			print "get data for this id = ".$parms['id'];
 		} else {
 			$this->getAll();
 		}
@@ -28,16 +27,16 @@ Class Controller implements iMethods
 	
 	static public function postMethod($parms)
 	{
-		
+		print "inserting data";
 	}
 	
 	static public function putMethod($parms)
 	{
-		print "i am updating data";
+		print "updating data with id = ".$parms['id'];
 	}
 	
-	static public function deleteMethod($id)
+	static public function deleteMethod($parms)
 	{
-		
+		print "delete data with id = ".$parms['id'];
 	}
 }
