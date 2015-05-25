@@ -4,7 +4,7 @@ namespace App\Config;
 interface iMethods
 {
 	public function getMethod($id);
-	static public function postMethod($parms);
-	static public function putMethod($id);
-	static public function deleteMethod($id);
+	public function postMethod($parms);
+	public function putMethod($id);
+	public function deleteMethod($id);
 }

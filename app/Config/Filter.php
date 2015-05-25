@@ -9,8 +9,8 @@ abstract Class Filter
 	
 	protected function filter($parts, $myfileds)
     {
-		if (isset($parts[0], $parts[1]) && $parts[1] != null && $parts[0] != "POST") {
-		    $parms['method'] = strtoupper($parts[0]);
+		if (isset($parts[0], $parts[1]) && $parts[1] != null && strtoupper($parts[0]) != "POST") {
+	        $parms['method'] = strtoupper($parts[0]);
 			$parms['id']     = $parts[1];
             $parms['message'] = "ok";
 		}else {
@@ -23,11 +23,11 @@ abstract Class Filter
                 $parms['method'] = "POST";
 				unset($_REQUEST['method']);
 
-				foreach ($_REQUEST as $key => $value){
-					if(in_array($key, $myfileds)) {
+				foreach ($_REQUEST as $key => $value) {
+					if (in_array($key, $myfileds)) {
                         $parms[$key] = $value;
-                    }else{
-						echo "<h1>".$key."</h1>is not an acceptable field";
+                    } else {
+						echo "<strong>".$key." </strong>is not an acceptable field. Contact system administrator";
 						exit;
 					}				
 				}

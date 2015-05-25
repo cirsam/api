@@ -1,14 +1,17 @@
 <?php
 namespace App\Controllers;
 
-use App\Model;
+use App\Models\Model as Model;
 use App\Config\iMethods;
 
 Class Controller implements iMethods
 {
-	public function __construct()
+	private $model;
+	private $parms = array();
+	
+	public function __construct(Model $model)
 	{
-		//echo "this is the constructor";
+        $this->model =  $model;
 	}
 	
 	public function getMethod($parms) 
@@ -22,22 +25,22 @@ Class Controller implements iMethods
 	
 	private function getAll() 
 	{
-		print "get all data";		
+        $this->model->getAll();
 	}
 	
-	static public function postMethod($parms)
-	{
+	public function postMethod($parms)
+	{		
 		unset($parms['method'], $parms['message']);
-		print_r($parms);
+        $this->model->postMethod($parms);
 	}
 	
-	static public function putMethod($parms)
+	public function putMethod($parms)
 	{
-		print "updating data with id = ".$parms['id'];
+        $this->model->putMethod($parms);
 	}
 	
-	static public function deleteMethod($parms)
+	public function deleteMethod($parms)
 	{
-		print "delete data with id = ".$parms['id'];
+        $this->model->deleteMethod($parms);
 	}
 }

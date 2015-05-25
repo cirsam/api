@@ -6,15 +6,16 @@ use App\Controllers\Controller as controller;
 
 Class Route extends Config\Filter
 {
-	private $id = "";
-	private $method = "";
 	private $parms = array();
 	private $uri = "";
 	private $parts = "";
 	private $myfileds = array("id", "color", "name");
+	private $controller;
 	
-	function __construct($uri)
-	{		
+	function __construct($uri, Controller $controller)
+	{
+        $this->controller = $controller;
+		
 		$parts = explode("/", $uri);
 		
 		$parms = $this->filter($parts, $this->myfileds);
@@ -30,17 +31,16 @@ Class Route extends Config\Filter
 	{
 		switch ($parms['method']) {
 		Case "GET":
-		    $controller = new controller();
-			call_user_func_array(array($controller, 'getMethod'), array($parms));
+			$this->controller->getMethod($parms);			
 			break;
 		Case "POST":
-			call_user_func_array(array('App\Controllers\Controller', 'postMethod'), array($parms));
+			 $this->controller->postMethod($parms);
             break;	
 		Case "PUT":
-			call_user_func_array(array('App\Controllers\Controller', 'putMethod'), array($parms));
+			$this->controller->putMethod($parms);
 			break;
 		Case "DELETE":
-			call_user_func_array(array('App\Controllers\Controller', 'deleteMethod'), array($parms));
+			$this->controller->deleteMethod($parms);
 			break;
 		default:
 		    echo "Not a valid endpoint";
