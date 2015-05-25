@@ -11,18 +11,19 @@ Class Route extends Config\Filter
 	private $parms = array();
 	private $uri = "";
 	private $parts = "";
+	private $myfileds = array("id", "color", "name");
 	
 	function __construct($uri)
 	{		
 		$parts = explode("/", $uri);
 		
-		    $parms = $this->filter($parts);
+		$parms = $this->filter($parts, $this->myfileds);
 			
-			if ($parms['message'] != "ok") {
-			    echo  $parms['message'];
-			} else {
-		        $this->getPath($parms);				
-			}
+        if ($parms['message'] != "ok") {
+            echo  $parms['message'];
+        } else {
+            $this->getPath($parms);
+        }
 	}
 	
 	protected function getPath($parms)

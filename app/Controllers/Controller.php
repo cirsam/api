@@ -27,7 +27,8 @@ Class Controller implements iMethods
 	
 	static public function postMethod($parms)
 	{
-		print "inserting data";
+		unset($parms['method'], $parms['message']);
+		print_r($parms);
 	}
 	
 	static public function putMethod($parms)

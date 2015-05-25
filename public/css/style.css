@@ -1,5 +1,7 @@
-body{background:#fff;font-family:Sans-serif;}
+body{background:#fff;font-family:Sans-serif;line-height:20px;}
 ul li {list-style:none;margin-bottom:20px;}
 ul li strong{color:blue;}
 .notes{position:relative;margin-top:40px;}
 .notes p span {position:relative;margin-top:40px;color:red;}
+#fail{color:red !important;}
+#pass{color:green;}
