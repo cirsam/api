@@ -7,4 +7,4 @@ use App\Models\Model;
 
 new Config\Route($_REQUEST['method'],  new Controller(new Model));	
 
-?>
+

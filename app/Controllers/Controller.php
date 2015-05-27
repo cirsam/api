@@ -12,20 +12,33 @@ Class Controller implements iMethods
 	public function __construct(Model $model)
 	{
         $this->model =  $model;
+
+		if (!file_exists("../storage/data/")) {
+			mkdir("../storage/data/", 0777);			
+		}
 	}
 	
 	public function getMethod($parms) 
 	{
+		$data = array();
+		$raw = $this->getAll();
+			
 		if (isset($parms['id'])) {
-			print "get data for this id = ".$parms['id'];
+			foreach ($raw as $key=>$subRaw) {
+			    $subRawKey = array_search($parms['id'], $raw[$key]);
+			    if($subRawKey == 'id'){
+			    	$data[] = $subRaw;
+			    }
+			}
+			print json_encode($data);
 		} else {
-			$this->getAll();
+			print json_encode($raw);
 		}
 	}
 	
 	private function getAll() 
 	{
-        $this->model->getAll();
+        return $this->model->getRaw();
 	}
 	
 	public function postMethod($parms)

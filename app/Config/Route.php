@@ -9,15 +9,28 @@ Class Route extends Config\Filter
 	private $parms = array();
 	private $uri = "";
 	private $parts = "";
-	private $myfileds = array("id", "color", "name");
 	private $controller;
+	private $myfileds = array (
+			"id",
+			"color",
+			"name" 
+	);
 	
 	function __construct($uri, Controller $controller)
-	{
-        $this->controller = $controller;
-		
-		$parts = explode("/", $uri);
-		
+	{	
+		if (!file_exists("../storage/data/")) {
+			mkdir("../storage/data/");
+		}
+
+	    if(!is_file("../storage/data/system_data.csv")) {
+			$tableColumns = implode (",", $this->myfileds);
+			$dataFile = fopen("../storage/data/system_data.csv", "w") or die("problem creating file");				
+			fwrite ($dataFile, $tableColumns);
+			fclose($dataFile);	
+		}
+				
+        $this->controller = $controller;		
+		$parts = explode("/", $uri);		
 		$parms = $this->filter($parts, $this->myfileds);
 			
         if ($parms['message'] != "ok") {
