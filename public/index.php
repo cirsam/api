@@ -5,6 +5,8 @@ use App\Config as Config;
 use App\Controllers\Controller;
 use App\Models\Model;
 
-new Config\Route($_REQUEST['method'],  new Controller(new Model));	
+$uri = (isset($_REQUEST['method']))?$_REQUEST['method'] : "";
+
+new Config\Route($uri,  new Controller(new Model));	
 
 
