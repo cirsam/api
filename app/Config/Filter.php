@@ -1,43 +1,137 @@
 <?php
-namespace App\Config;
+namespace App\Models;
 
-abstract class Filter
+use App\Config\iMethods;
+
+Class Model implements iMethods
 {
-	private $parms = array ();
+    public function __construct ()
+	{
+		
+		//echo "<h4>This is where data collection happens. 
+		//<br />You can use Relational Database Model Object like Eloquent or your own MySQL Database. Next stage is adding data processor</h4>Result: ";
+	}
 	
-	protected abstract function getPath($parms);
+	public function getMethod($id)
+	{
+		
+	}
 	
-	protected function filter($parts, $myfileds)
-    {
-    	$parms['tablecolumns'] = $myfileds;
-    	  						
-		if (isset ( $parts [0], $parts [1] ) && $parts [1] != null && strtoupper ( $parts [0] ) != "POST") {
-			$parms ['method'] = strtoupper ( $parts [0] );
-			$parms ['id'] = $parts [1];
-			$parms ['message'] = "ok";
-		} else {
-			if ((strtoupper ( $parts [0] ) == "DELETE" && isset ( $parts [1] ) && $parts [1] == null) || (strtoupper ( $parts [0] ) == "PUT" && isset ( $parts [1] ) && $parts [1] == null)) {
-				$parms ['message'] = "you can not leave your parameter blank";
-			} elseif (strtoupper ( $parts [0] ) == "GET") {
-				$parms ['method'] = "GET";
-				$parms ['message'] = "ok";
-			} elseif (strtoupper ( $parts [0] ) == "POST" && isset ( $_REQUEST ['id'] )) {
-				$parms ['method'] = "POST";
-				unset ( $_REQUEST ['method'] );
-				foreach ( $_REQUEST as $key => $value ) {
-					if (in_array ( $key, $myfileds)) {
-						$parms [$key] = $value;
+	public function getRaw()
+	{
+		$newData = array();
+			
+		try {
+			    $fileName = "../storage/data/system_data.csv";
+			
+		        if (!file_exists($fileName)) {
+			        throw new \Exception("file not found");
+		        }
+				
+			    $dataFile = fopen($fileName, "r");
+			
+			    do {
+				    $data[] = \fgetcsv($dataFile);
+			    } while (!feof($dataFile));
+			
+			    fclose($dataFile);
+				
+			    $dataHeaders = $data[0];
+			    unset($data[0]);
+			    
+			    foreach ($data as $subData) {
+			    	$newData[] = array_combine($dataHeaders, $subData);
+			    }
+			    			    
+			return $newData;		
+		} catch (\Exception $e) {
+			echo $e;
+		}		
+	}
+	
+	public function postMethod($parms)
+	{
+		$separator = '"';
+		$row = array();		
+		foreach ($parms['tablecolumns'] as $columnName){
+        	$row[] = $separator.$parms[$columnName].$separator;
+		}
+	    $row = implode(',', $row);	
+		file_put_contents ("../storage/data/system_data.csv", chr(10).$row, FILE_APPEND);	
+		return "ok";
+	}
+	
+	public function putMethod($parms)
+	{	
+		try {
+			$dataNew = "";
+			$fileName = "../storage/data/system_data.csv";
+			$fileNameTemp = "../storage/data/system_datatemp.csv";
+			
+			if (!file_exists($fileName)) {
+				throw new \Exception("file not found");
+			}
+			
+			$dataFileTemp = fopen($fileNameTemp, "w");
+			$tableColumns = implode(",", $parms['tablecolumns']);
+			file_put_contents($fileNameTemp, $tableColumns);
+				
+			$dataFile = fopen($fileName, "r");
+			while(!feof($dataFile)) {
+				$data = \fgetcsv($dataFile);
+				if ($data[0] != "id"){
+					if ($data[0] == $parms['id']) {
+						$dataNew = implode(",", $data);
+						
+						file_put_contents ($fileNameTemp, chr(10).$dataNew, FILE_APPEND);
 					} else {
-						echo "<strong>" . $key . " </strong>is not an acceptable field. Contact system administrator";
-						exit ();
+						$dataNew = implode(",", $data);
+						file_put_contents ($fileNameTemp, chr(10).$dataNew, FILE_APPEND);
 					}
 				}
-				$parms ['message'] = "ok";
-			} else {
-				$parms ['message'] = "not a valid endpoint";
 			}
+			
+			fclose($dataFile);
+			fclose($dataFileTemp);
+			rename($fileNameTemp, $fileName);
+			return "ok";	
+		}catch(\Exception $e) {
+			print $e;
 		}
-		
-		return $parms;
-	}
+    }
+	
+	public function deleteMethod($parms)
+	{			
+		try {
+			    $dataNew = "";
+			    $fileName = "../storage/data/system_data.csv";
+			    $fileNameTemp = "../storage/data/system_datatemp.csv";
+
+		        if (!file_exists($fileName)) {
+			        throw new \Exception("file not found");
+		        }
+		        
+		        $dataFileTemp = fopen($fileNameTemp, "w");
+		        $tableColumns = implode(",", $parms['tablecolumns']);
+		        file_put_contents($fileNameTemp, $tableColumns);
+		        			        
+		        $dataFile = fopen($fileName, "r");
+			    while(!feof($dataFile)) {
+				    $data = \fgetcsv($dataFile);
+				    if ($data[0] != "id"){
+				    	if ($data[0] != $parms['id']){
+				    		$dataNew = implode(",", $data);
+				    		file_put_contents ($fileNameTemp, chr(10).$dataNew, FILE_APPEND);
+				    	}
+				    }
+			    }
+
+			   fclose($dataFile);
+			   fclose($dataFileTemp);
+			   rename($fileNameTemp, $fileName);
+			return "ok";
+         } catch (\Exception $e) {
+			echo $e;
+		}
+	}	
 }
