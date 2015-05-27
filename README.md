@@ -1,4 +1,4 @@
-#Enterprisehubs PHP API plugin Framework- No SQL DB, The WEB 4.0
+#Enterprisehubs PHP API plugin Framework- WEB 4.0 Databaseless API
 
 
 This is an open source PHP API plugin Framework and contributors are invited to add suggestions and to upgrade it to benefit everyone.
