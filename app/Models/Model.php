@@ -64,7 +64,7 @@ Class Model implements iMethods
 	public function putMethod($parms)
 	{
 		
-		try {
+	    try {
 			$dataNew = "";
 			$fileName = "../storage/data/system_data.csv";
 			$fileNameTemp = "../storage/data/system_datatemp.csv";
@@ -72,7 +72,7 @@ Class Model implements iMethods
 			if (!file_exists($fileName)) {
 				throw new \Exception("file not found");
 			}
-			
+
 			$dataFileTemp = fopen($fileNameTemp, "w");
 			$tableColumns = implode(",", $parms['tablecolumns']);
 			file_put_contents($fileNameTemp, $tableColumns);
@@ -80,23 +80,27 @@ Class Model implements iMethods
 			$dataFile = fopen($fileName, "r");
 			while(!feof($dataFile)) {
 				$data = \fgetcsv($dataFile);
-				if ($data[0] != "id"){
-					if ($data[0] == $parms['id']) {
+				if ($data[0] != "id") {
+					if ($data[0] == $parms['id']) {			
+						foreach ($parms['tablecolumns'] as $key => $value) {
+							if (isset($parms[$value])) {
+								$data[$key] = $parms[$value];
+							}
+                        }
 						$dataNew = implode(",", $data);
-						
 						file_put_contents ($fileNameTemp, chr(10).$dataNew, FILE_APPEND);
 					} else {
 						$dataNew = implode(",", $data);
 						file_put_contents ($fileNameTemp, chr(10).$dataNew, FILE_APPEND);
 					}
-				}
+                }
 			}
 			
-			fclose($dataFile);
+		    fclose($dataFile);
 			fclose($dataFileTemp);
 			rename($fileNameTemp, $fileName);
 			return "ok";	
-		}catch(\Exception $e) {
+		} catch(\Exception $e) {
 			print $e;
 		}
     }

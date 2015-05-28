@@ -16,17 +16,17 @@ abstract class Filter
 			$parms ['id'] = $parts [1];
 			$parms ['message'] = "ok";
 		} else {
-			if ((strtoupper ( $parts [0] ) == "DELETE" && isset ( $parts [1] ) && $parts [1] == null) || (strtoupper ( $parts [0] ) == "PUT" && isset ( $parts [1] ) && $parts [1] == null)) {
+			if (strtoupper($parts [0]) == "DELETE" && isset($parts [1]) && $parts [1] == null) {
 				$parms ['message'] = "you can not leave your parameter blank";
-			} elseif (strtoupper ( $parts [0] ) == "GET") {
+			} elseif (strtoupper($parts [0]) == "GET") {
 				$parms ['method'] = "GET";
 				$parms ['message'] = "ok";
-			} elseif (strtoupper ( $parts [0] ) == "POST" && isset ( $_REQUEST ['id'] )) {
-				$parms ['method'] = "POST";
-				unset ( $_REQUEST ['method'] );
-				foreach ( $_REQUEST as $key => $value ) {
-					if (in_array ( $key, $myfileds)) {
-						$parms [$key] = $value;
+			} elseif (strtoupper($parts [0]) == "POST" && isset($_REQUEST ['id']) || (strtoupper ( $parts [0] ) == "PUT" && isset ( $parts [1] ) && $parts [1] == null)) {
+				$parms ['method'] = strtoupper(trim($_REQUEST['method'], "/"));				
+				unset ($_REQUEST ['method']);
+				foreach ($_REQUEST as $key => $value) {
+					if (in_array($key, $myfileds)) {
+						$parms[$key] = $value;
 					} else {
 						echo "<strong>" . $key . " </strong>is not an acceptable field. Contact system administrator";
 						exit ();

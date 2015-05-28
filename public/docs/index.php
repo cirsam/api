@@ -44,8 +44,7 @@
 				acceptable field in the myfields array in the route. If you add
 				height into the myfields array it will pass. will insert data</li>
 			<li><strong>put</strong><br />
-			try this: http://rovedin.com/api/public/put/?id=2&color=eee will update data with id = 2 still
-				constructing it</li>
+			try this: http://rovedin.com/api/public/put/?id=2&color=eee will update data with id = 2 </li>
 			<li><strong>delete/1</strong> will delete data with id = 1.</li>
 		</ul>
 	</div>
@@ -86,18 +85,18 @@
 				<br />
 				    try this: http://rovedin.com/api/public/post/?id=1&color=fff&name=white&height=21 it will <strong id="fail">fail</strong> because
 				    it is not an acceptable field in the myfields array in the route. If you add height into the myfields array it will pass.
-    		        will insert data, still constructing it		
+    		        will insert data	
 		    </li>
-            <li><strong>put/1</strong> will update data with id = 1 still constructing it</li>
-            <li><strong>delete/1</strong> will delete data with id = 1 still constructing it</li>
+            <li><strong>put/1</strong> will update data with id = 1</li>
+            <li><strong>delete/1</strong> will delete data with id = 1</li>
         </ul>
 	</div>
         To use this application, start by specifying an endpoint. For example
     <ul>
         <li><strong>get/1</strong> will get data with id = 1</li>
-        <li><strong>post/headers</strong> will insert data, still constructing it</li>
-        <li><strong>put/1</strong> will update data with id = 1 still constructing it</li>
-        <li><strong>delete/1</strong> will delete data with id = 1 still constructing it</li>
+        <li><strong>post/headers</strong> will insert data</li>
+        <li><strong>put/1</strong> will update data with id = 1</li>
+        <li><strong>delete/1</strong> will delete data with id = 1</li>
     </ul>
     <div class="notes">
         <h4>Useful tools:</h4>
